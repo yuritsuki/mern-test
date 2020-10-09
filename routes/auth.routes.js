@@ -2,7 +2,7 @@ const {Router} = require('express');
 const bcrypt = require('bcryptjs');
 const config = require('config');
 const jwt = require('jsonwebtoken');
-const {check, ValidationResult} = require('express-validator');
+const {check, validationResult} = require('express-validator');
 const User = require('../models/User');
 const router = Router();
 
@@ -15,7 +15,8 @@ router.post(
     ],
     async(req, res) => {
         try {
-            const errors = ValidationResult(req);
+
+            const errors = validationResult(req);
 
             if(!errors.isEmpty()) {
                 return res.status(400).json({
@@ -40,7 +41,10 @@ router.post(
             res.status(201).json({message:'User created.'});
 
         } catch (e) {
-            res.status(500).json({message: "Something went wrong, please try again."});
+            res.status(500).json({
+                message: "Something went wrong, please try again.",
+                data: JSON.stringify(e.message)
+            });
         }
 });
 
@@ -53,7 +57,8 @@ router.post(
     ],
     async(req, res) => {
         try {
-            const errors = ValidationResult(req);
+
+            const errors = validationResult(req);
 
             if(!errors.isEmpty()) {
                 return res.status(400).json({
@@ -86,7 +91,10 @@ router.post(
 
 
         } catch (e) {
-            res.status(500).json({message: "Something went wrong, please try again."});
+            res.status(500).json({
+                message: "Something went wrong, please try again.",
+                data: JSON.stringify(e.message)
+            });
         }
 });
 
