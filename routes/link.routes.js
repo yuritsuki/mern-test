@@ -14,7 +14,7 @@ router.post('/generate', auth, async (req, res) => {
 
         const existing = await Link.findOne({from});
         if(existing) {
-            res.json({link: existing});
+            return res.json({link: existing});
         }
 
         const to = baseUrl + '/t/' + code;
