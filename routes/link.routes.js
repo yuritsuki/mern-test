@@ -5,7 +5,7 @@ const auth = require('../middleware/auth.middleware');
 const config = require('config');
 const shortid = require('shortid');
 
-router.post('/generate', async (req, res) => {
+router.post('/generate', auth, async (req, res) => {
     try {
         const baseUrl = config.get('baseUrl');
         const {from} = req.body;
@@ -16,6 +16,16 @@ router.post('/generate', async (req, res) => {
         if(existing) {
             res.json({link: existing});
         }
+
+        const to = baseUrl + '/t/' + code;
+
+        const link = new Link({
+            code, to, from, owner: req.user.userId
+        });
+
+        await link.save();
+
+        res.status(201).json({link});
 
 
     } catch (e) {
@@ -36,7 +46,7 @@ router.get('/',auth, async(req,res) => {
     }
 });
 
-router.get('/:id', async(req,res) => {
+router.get('/:id', auth,async(req,res) => {
     try {
         const link = await Link.findById(req.params.id);
         res.json(link);
