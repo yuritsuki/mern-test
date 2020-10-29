@@ -1,5 +1,6 @@
 {
   "port": 5000,
   "jwtSecret": "yuritsuki mern",
-  "mongoUri": ""
+  "mongoUri": "",
+  "baseUrl": "http://localhost:5000"
 }
